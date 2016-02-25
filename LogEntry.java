@@ -125,7 +125,17 @@ public class LogEntry implements Comparable<LogEntry>
         return when;
     }
 
-   
+   public int getDay(){
+       return dataValues[DAY];
+    }
+    
+     public int getMonth(){
+       return dataValues[MONTH];
+    }
+    
+     public int getYear(){
+       return dataValues[YEAR];
+    }
     
     /**
      * Create an equivalent Calendar object from the data values.
