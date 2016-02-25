@@ -23,7 +23,16 @@ public class LogAnalyzer
         // Create the reader to obtain the data.
         reader = new LogfileReader();
     }
-
+    
+    public LogAnalyzer(String nombreLog){
+        // Create the array object to hold the hourly
+        // access counts.
+        hourCounts = new int[24];
+        // Create the reader to obtain the data.
+        reader = new LogfileReader(nombreLog);
+    
+    }
+            
     /**
      * Analyze the hourly access data from the log file.
      */
@@ -44,7 +53,8 @@ public class LogAnalyzer
     public void printHourlyCounts()
     {
         System.out.println("Hr: Count");
-        for(int hour = 0; hour < hourCounts.length; hour++) {
+        int hour = 0;
+        while( hour < hourCounts.length) {
             System.out.println(hour + ": " + hourCounts[hour]);
         }
     }
@@ -56,4 +66,75 @@ public class LogAnalyzer
     {
         reader.printData();
     }
+    
+    
+     public int numberOfAccesses()
+    {
+        int numeroDeAccesos = 0;
+        int index = 0;
+        while(index < hourCounts.length)
+        {
+            numeroDeAccesos =numeroDeAccesos + hourCounts[index];
+            index++;
+        }
+        return numeroDeAccesos;  
+  
+    }
+  
+  	/**
+     * Devuelve a qué hora el servidor tuvo que responder a más peticiones.
+     * Si hay empate devuelve la última de las horas. Si no ha habido acceso,
+     * informa del hecho por pantalla y devuelve -1
+     */
+    public int busiestHour(){
+        int masAcceso = -1;
+        int hora = 0;
+        while(hora < hourCounts.length) {
+            if(masAcceso != -1){
+                if(hourCounts[hora] >= hourCounts[masAcceso]){
+                   masAcceso = hora;
+                }
+            }
+            else if(hourCounts[hora] != 0){masAcceso = hora;}
+           hora++;
+        }
+        if(masAcceso == -1){System.out.println("No ha habido accesos.");}
+        return masAcceso;
+    }
+    
+    public int horaMenosCarga(){
+        int bajoAcceso = -1;
+        int hora = 0;
+        while(hora < hourCounts.length) {
+            if(bajoAcceso != -1){
+                if(hourCounts[hora] <= hourCounts[bajoAcceso]){
+                    bajoAcceso = hora;
+                }
+            }
+            else if(hourCounts[hora] != 0){bajoAcceso = hora;}
+            hora++;
+        }
+        if(bajoAcceso == -1){System.out.println("No ha habido accesos.");}
+        return bajoAcceso;
+    }
+    
+    public int dosHorasMasCarga(){
+        int masAcceso = -1;
+        int numAcceso = 0;
+        int hora = 0;
+        while(hora < hourCounts.length) {
+            if(numAcceso != 0){
+                if((hourCounts[hora] + hourCounts[hora - 1]) >= numAcceso){
+                    numAcceso = hourCounts[hora] + hourCounts[hora - 1];
+                    masAcceso = hora ;
+                }
+            }
+            
+            hora++;
+        }
+        if(numAcceso == 0){System.out.println("No ha habido accesos.");}
+        return masAcceso;
+    }
+    
+   
 }

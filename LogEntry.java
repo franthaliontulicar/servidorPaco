@@ -125,6 +125,8 @@ public class LogEntry implements Comparable<LogEntry>
         return when;
     }
 
+   
+    
     /**
      * Create an equivalent Calendar object from the data values.
      */
